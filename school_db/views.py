@@ -59,9 +59,13 @@ SELECT `school_db_student`.`id`,
 # Print out each student's full name and gpa to the terminal
 def problem_one(request):
 
+  student_gpa = Student.objects.filter(gpa__gt=3.0).order_by('-gpa')
+
+  for student in student_gpa:
+    print(f'First Name: {student.first_name} Last Name: {student.last_name} GPA: {student.gpa}')
 
 
-    return complete(request)
+  return complete(request)
 
 
 # Supporting Query Method Documentation:
@@ -99,10 +103,11 @@ SELECT `school_db_student`.`id`,
 # Order by hire date ascending
 # Print out the instructor's full name and hire date to the terminal
 def problem_two(request):
+  instructors_hired = Instructor.objects.filter(hire_date__year__lt=2010).order_by('hire_date')
+  for instructor in instructors_hired:
+    print(f'Full name: {instructor.first_name} {instructor.last_name} Hire Date: {instructor.hire_date}')
 
-
-
-    return complete(request)
+  return complete(request)
 
 
 # Supporting Query Method Documentation:
@@ -139,10 +144,16 @@ SELECT `school_db_instructor`.`id`,
 # Print the instructors name and courses that he belongs to in the terminal 
 # (Do not hard code his name in the print)
 def problem_three(request):
+  instructor = Instructor.objects.get(pk=2)
+  instructor_courses = Course.objects.filter(instructor_id=2)
 
+  print(f'Instructor Name: {instructor.first_name} {instructor.last_name}')
+  print("Courses:")
 
+  for courses in instructor_courses:
+    print(f"  {courses.name}")
 
-    return complete(request)
+  return complete(request)
 
 
 # Supporting Query Method Documentation:
@@ -187,10 +198,16 @@ SELECT `school_db_instructor`.`id`,
 
 # Get the count of students, courses, and instructors and print them in the terminal
 def problem_four(request):
+  student_total = Student.objects.count()
+  total_courses = Course.objects.count()
+  instructors_count = Instructor.objects.count()
 
-
-
-    return complete(request)
+  print(f"""
+  Student count: {student_total}
+  Courses count: {total_courses}
+  Instructors Count: {instructors_count}""")
+  
+  return complete(request)
 
 
 # Supporting Query Method Documentation:
